@@ -52,8 +52,8 @@ CONSTRAINT UnCURP UNIQUE (curp));
 
 CREATE TABLE servicios(
 clvServ CHAR(4),
-descripServ VARCHAR2(100) NOT NULL,
 nomServicio VARCHAR2(30) NOT NULL,
+descripServ VARCHAR2(100) NOT NULL,
 CONSTRAINT PkServicio PRIMARY KEY (clvServ));
 
 CREATE TABLE grado(
