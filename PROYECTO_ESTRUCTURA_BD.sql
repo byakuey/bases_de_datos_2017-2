@@ -109,7 +109,7 @@ descuento NUMBER(3) NOT NULL,
 importeCre NUMBER(11,2) NOT NULL,
 usado CHAR(2) NOT NULL,
 CONSTRAINT PkCredito PRIMARY KEY (noNotaCredito),
-CONSTRAINT FkCreditoReferencia FOREIGN KEY (referencia) REFERENCES cargo (noNotaCargo));
+CONSTRAINT FkCreditoReferencia FOREIGN KEY (referenciaCargo) REFERENCES cargo (noNotaCargo));
 
 CREATE TABLE alum_res(
 clvAlumno CHAR(10),
