@@ -3,28 +3,21 @@ idTipo CHAR(10),
 tipoRes VARCHAR2(20) NOT NULL,
 CONSTRAINT PkTipoResponsable PRIMARY KEY (idTipo));
 
-CREATE TABLE parentesco(
-clvParen CHAR(10),
-descripParen VARCHAR2(20) NOT NULL,
-CONSTRAINT PKParentesco PRIMARY KEY (clvParen));
-
 CREATE TABLE responsable(
 clvRes CHAR(10),
-clvParen CHAR(10),
 idTipo CHAR(10) NOT NULL,
+nomRes VARCHAR2(20) NOT NULL,
 apPatRes VARCHAR2(20) NOT NULL,
 apMatRes VARCHAR2(20),
-nomRes VARCHAR2(20) NOT NULL,
 fechaNac DATE NOT NULL,
 sexoRes CHAR(1) NOT NULL,
-celular VARCHAR2(10),
 calleRes VARCHAR2(30) NOT NULL,
 colRes VARCHAR2(30) NOT NULL,
 delRes VARCHAR2(30) NOT NULL,
 cp CHAR(5) NOT NULL,
+celular VARCHAR2(10),
 CONSTRAINT PkClvRes PRIMARY KEY (clvRes),
 CONSTRAINT FkResponsableIdTipo FOREIGN KEY (idTipo) REFERENCES tipoResponsable (idTipo),
-CONSTRAINT FkResponsableClvParen FOREIGN KEY (clvParen) REFERENCES parentesco (clvParen),
 CONSTRAINT CkSexoRes CHECK (sexoRes IN('H','M')));
 
 CREATE TABLE contacto(
@@ -43,7 +36,6 @@ CONSTRAINT UnRFC UNIQUE (rfc));
 
 CREATE TABLE alumno(
 clvAlumno CHAR(10),
-clvTutor CHAR(10) NOT NULL,
 curp CHAR(18) NOT NULL,
 nomAlu VARCHAR2(20) NOT NULL,
 apPatAlu VARCHAR2(20) NOT NULL,
@@ -55,8 +47,8 @@ colAlu VARCHAR2(30) NOT NULL,
 delAlu VARCHAR2(30) NOT NULL,
 cp CHAR(5) NOT NULL,
 CONSTRAINT PkClvAlumno PRIMARY KEY (clvAlumno),
-CONSTRAINT FkAlumnoClvTutor FOREIGN KEY (clvTutor) REFERENCES tutor(clvTutor),
-CONSTRAINT CkSexoAlu CHECK (sexoAlu IN('H','M')));
+CONSTRAINT CkSexoAlu CHECK (sexoAlu IN('H','M')),
+CONSTRAINT UnCURP UNIQUE (curp));
 
 CREATE TABLE servicios(
 clvServ CHAR(4),
@@ -91,6 +83,7 @@ clvAlumno CHAR(10) NOT NULL,
 clvGrupo CHAR(4) NOT NULL,
 numGrado CHAR(1) NOT NULL,
 cicloInsc VARCHAR2(10) NOT NULL,
+fechaInsc DATE DEFAULT SYSDATE NOT NULL,
 CONSTRAINT PkInscripcion PRIMARY KEY (clvInscrip),
 CONSTRAINT FkInscripcionClvAlumno FOREIGN KEY (clvAlumno) REFERENCES alumno (clvAlumno),
 CONSTRAINT FKInscripcionGrupo FOREIGN KEY (clvGrupo,numGrado) REFERENCES grupo (clvGrupo,numgrado));
@@ -98,18 +91,19 @@ CONSTRAINT FKInscripcionGrupo FOREIGN KEY (clvGrupo,numGrado) REFERENCES grupo (
 CREATE TABLE cargo(
 noNotaCargo CHAR(10),
 clvInscrip CHAR(10) NOT NULL,
+clvServ CHAR(4) NOT NULL,
 fechaCrea DATE DEFAULT SYSDATE NOT NULL,
 fechaVenc DATE NOT NULL,
 fechaPago DATE,
-servicio VARCHAR2(20) NOT NULL,
 importeCar NUMBER(11,2) NOT NULL,
 CONSTRAINT PkCargo PRIMARY KEY (noNotaCargo),
-CONSTRAINT FkCargoClvInscrip FOREIGN KEY (clvInscrip) REFERENCES inscripcion (clvInscrip));
+CONSTRAINT FkCargoClvInscrip FOREIGN KEY (clvInscrip) REFERENCES inscripcion (clvInscrip),
+CONSTRAINT FkCargoClvServ FOREIGN KEY (clvServ) REFERENCES servicios (clvServ));
 
 CREATE TABLE credito(
 noNotaCredito CHAR(10),
 clvInscrip CHAR(10) NOT NULL,
-referencia CHAR(10) NOT NULL,
+referenciaCargo CHAR(10) NOT NULL,
 fecha DATE NOT NULL,
 descuento NUMBER(3) NOT NULL,
 importeCre NUMBER(11,2) NOT NULL,
@@ -117,6 +111,13 @@ usado CHAR(2) NOT NULL,
 CONSTRAINT PkCredito PRIMARY KEY (noNotaCredito),
 CONSTRAINT FkCreditoReferencia FOREIGN KEY (referencia) REFERENCES cargo (noNotaCargo));
 
+CREATE TABLE alum_res(
+clvAlumno CHAR(10),
+clvRes CHAR(10),
+parentesco VARCHAR2(20),
+CONSTRAINT FkAlumResClvAlu FOREIGN KEY (clvAlumno) REFERENCES alumno (clvAlumno),
+CONSTRAINT FkAlumResClvRes FOREIGN KEY (clvRes) REFERENCES responsable (clvRes),
+CONSTRAINT PkAlumRes PRIMARY KEY (clvAlumno,clvRes));
 
 
 SET LINE 180;
