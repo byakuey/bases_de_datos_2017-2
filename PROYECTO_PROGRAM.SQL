@@ -1,19 +1,22 @@
 
 --Llenando tabla servicios
 INSERT INTO servicios
-VALUES('S001','Pago anual que normalmente se difiere hasta en 12 pagos','Colegiatura');
+VALUES('S001','Colegiatura','Pago anual que normalmente se difiere hasta en 12 pagos');
 
 INSERT INTO servicios
-VALUES('S002','Pago que se realiza al inscribirse','Inscripcion');
+VALUES('S002','Inscripcion','Pago que se realiza al inscribirse');
 
 INSERT INTO servicios
-VALUES('S003','Unico pago, se realiza normalmente en el primer mes','Material escolar');
+VALUES('S003','Material escolar','Unico pago, se realiza normalmente en el primer mes');
 
 INSERT INTO servicios
-VALUES('S004','Unico pago, se realiza normalmente en el primer mes','Uniforme');
+VALUES('S004','Uniforme','Unico pago, se realiza normalmente en el primer mes');
 
 INSERT INTO servicios
-VALUES('S005','Unico pago, se realiza normalmente en el primer mes','Libros');
+VALUES('S005','Libros','Unico pago, se realiza normalmente en el primer mes');
+
+INSERT INTO servicios
+VALUES('S006','Multas','Adeudos generados por pagos atrasados');
 
 --Llenando Grado
 INSERT INTO grado
@@ -106,99 +109,83 @@ INSERT INTO grad_serv
 VALUES('S005','1',500,1);
 -- segundo
 INSERT INTO grad_serv
-VALUES('S001','2',2000,3);
+VALUES('S001','2',2100,3);
 
 INSERT INTO grad_serv
-VALUES('S002','2',24000,1);
+VALUES('S002','2',25000,1);
 
 INSERT INTO grad_serv
-VALUES('S003','2',800,1);
+VALUES('S003','2',900,1);
 
 INSERT INTO grad_serv
-VALUES('S004','2',2500,1);
+VALUES('S004','2',2600,1);
 
 INSERT INTO grad_serv
-VALUES('S005','2',500,1);
+VALUES('S005','2',600,1);
 
 --tercero
 INSERT INTO grad_serv
-VALUES('S001','3',2000,3);
+VALUES('S001','3',2200,3);
 
 INSERT INTO grad_serv
-VALUES('S002','3',24000,1);
+VALUES('S002','3',26000,1);
 
 INSERT INTO grad_serv
-VALUES('S003','3',800,1);
+VALUES('S003','3',1000,1);
 
 INSERT INTO grad_serv
-VALUES('S004','3',2500,1);
+VALUES('S004','3',2700,1);
 
 INSERT INTO grad_serv
-VALUES('S005','3',500,1);
+VALUES('S005','3',700,1);
 
 --cuarto
 INSERT INTO grad_serv
-VALUES('S001','4',2000,3);
+VALUES('S001','4',2300,3);
 
 INSERT INTO grad_serv
-VALUES('S002','4',24000,1);
+VALUES('S002','4',27000,1);
 
 INSERT INTO grad_serv
-VALUES('S003','4',800,1);
+VALUES('S003','4',1100,1);
 
 INSERT INTO grad_serv
-VALUES('S004','4',2500,1);
+VALUES('S004','4',2700,1);
 
 INSERT INTO grad_serv
-VALUES('S005','4',500,1);
+VALUES('S005','4',800,1);
 
 --quinto
 INSERT INTO grad_serv
-VALUES('S001','5',2000,3);
+VALUES('S001','5',2400,3);
 
 INSERT INTO grad_serv
-VALUES('S002','5',24000,1);
+VALUES('S002','5',28000,1);
 
 INSERT INTO grad_serv
-VALUES('S003','5',800,1);
+VALUES('S003','5',1200,1);
 
 INSERT INTO grad_serv
-VALUES('S004','5',2500,1);
+VALUES('S004','5',2800,1);
 
 INSERT INTO grad_serv
-VALUES('S005','5',500,1);
+VALUES('S005','5',900,1);
 
 -- sexto
 INSERT INTO grad_serv
-VALUES('S001','6',2000,3);
+VALUES('S001','6',2500,3);
 
 INSERT INTO grad_serv
-VALUES('S002','6',24000,1);
+VALUES('S002','6',29000,1);
 
 INSERT INTO grad_serv
-VALUES('S003','6',800,1);
+VALUES('S003','6',1300,1);
 
 INSERT INTO grad_serv
-VALUES('S004','6',2500,1);
+VALUES('S004','6',2900,1);
 
 INSERT INTO grad_serv
-VALUES('S005','6',500,1);
-
---Llenando parentescos
-INSERT INTO parentesco
-VALUES ('1', 'Padre');
-
-INSERT INTO parentesco
-VALUES ('2', 'Madre');
-
-INSERT INTO parentesco
-VALUES ('3', 'Tio(a)');
-
-INSERT INTO parentesco
-VALUES ('4', 'Abuelo(a)');
-
-INSERT INTO parentesco
-VALUES ('5', 'Primo(a)');
+VALUES('S005','6',1000,1);
 
 --Llenando tipoResponsable
 INSERT INTO tipoResponsable
@@ -251,23 +238,22 @@ END creaServ;
 
 CREATE OR REPLACE PROCEDURE insertaResponsable
 (	vClvRes IN CHAR,
-	vClvParen IN CHAR,
 	vIdTipo IN CHAR,
-	vApPatRes IN VARCHAR2,
-	vApMatRes IN VARCHAR2,
 	vNomRes IN VARCHAR2,
+	vApPatRes IN VARCHAR2,
+	vApMatRes IN VARCHAR2,	
 	vFechaNac IN DATE,
-	vSexoRes IN CHAR,
-	vCelular IN VARCHAR2,
+	vSexoRes IN CHAR,	
 	vCalleRes IN VARCHAR2,
 	vColRes IN VARCHAR2,
 	vDelRes IN VARCHAR2,
-	vCP IN CHAR
+	vCP IN CHAR,
+	vCelular IN VARCHAR2
 )
 AS
 BEGIN
 	INSERT INTO responsable
-	VALUES(vClvRes,vClvParen,vIdTipo,vApPatRes,vApMatRes,vNomRes,vFechaNac,vSexoRes,vCelular,vCalleRes,vColRes,vDelRes,vCP);
+	VALUES(vClvRes,vIdTipo,vNomRes,vApPatRes,vApMatRes,vFechaNac,vSexoRes,vCalleRes,vColRes,vDelRes,vCP,vCelular);
 	COMMIT;
 END insertaResponsable;
 /
@@ -285,11 +271,9 @@ BEGIN
 	COMMIT;
 END insertaTutor;
 /
-
 --ALTA ESTUDIANTES
 CREATE OR REPLACE PROCEDURE insertaAlumno
-(	vClvAlumno IN CHAR,
-	vClvTutor IN CHAR,
+(	vClvAlumno IN CHAR,	
 	vCurp IN CHAR,
 	vNomAlu IN VARCHAR2,
 	vApPatAlu IN VARCHAR2,
@@ -304,7 +288,7 @@ CREATE OR REPLACE PROCEDURE insertaAlumno
 AS
 BEGIN
 	INSERT INTO alumno
-	VALUES(vClvAlumno,vClvTutor,vCurp,vNomAlu,vApPatAlu,vApMatAlu,vFechaNac,vSexoAlu,vCalleAlu,vColAlu,vDelAlu,vCP);
+	VALUES(vClvAlumno,vCurp,vNomAlu,vApPatAlu,vApMatAlu,vFechaNac,vSexoAlu,vCalleAlu,vColAlu,vDelAlu,vCP);
 	COMMIT;
 END insertaAlumno;
 /
@@ -318,17 +302,20 @@ AS
 BEGIN
 	SELECT fechaPago INTO vBuscaDeuda
 	FROM cargo 
-	NATURAL JOIN inscripcion
-	NATURAL JOIN alumno
+	JOIN inscripcion USING (clvInscrip)
+	JOIN alumno USING (clvAlumno)
 	WHERE clvAlumno = vClvAlumno;
 	IF(vBuscaDeuda IS NOT NULL) THEN
 		DELETE FROM alumno
 		WHERE alumno.clvAlumno = vClvAlumno;
+		COMMIT;
 	ELSE
-		DBMS_OUTPUT.PUT_LINE('El alumno aun presenta deudas');
+		DBMS_OUTPUT.PUT_LINE('El alumno aun presenta adeudos');
 	END IF;
 END bajaAlumno;
 /
+
+--Procedimiento para calculo de deudas
 
 CREATE OR REPLACE PROCEDURE deudaTotal
 (	vClvTutor IN CHAR,
@@ -341,15 +328,17 @@ SELECT SUM(importeCar) INTO vTotal
 FROM cargo
 JOIN inscripcion USING(clvInscrip)
 JOIN alumno USING(clvAlumno)
-JOIN tutor USING(clvTutor)
+LEFT OUTER JOIN alum_res ON clvRes = vClvTutor
+LEFT OUTER JOIN responsable ON responsable.clvRes = vClvTutor
+LEFT OUTER JOIN tutor ON tutor.clvRes = vClvTutor
 WHERE (TRUNC(fechaCrea) >= TRUNC(vFecha)
 	AND TRUNC(fechaVenc) <= TRUNC(vFecha))
 	AND fechaPago IS NULL
-	AND clvTutor = vClvTutor;
+	AND tutor.clvRes = vClvTutor;
 IF vTotal IS NULL THEN
-	DBMS_OUTPUT.PUT_LINE('EL Tutor con la clave '||vclvTutor||' no tiene adeudos');
+	DBMS_OUTPUT.PUT_LINE('El Tutor con la clave '||vclvTutor||' no tiene adeudos');
 ELSE
-	DBMS_OUTPUT.PUT_LINE('EL Tutor con la clave '||vclvTutor||' debe: $'||vTotal);
+	DBMS_OUTPUT.PUT_LINE('El Tutor con la clave '||vclvTutor||' debe: $'||vTotal);
 END IF;
 
 END deudaTotal;
@@ -364,7 +353,7 @@ BEGIN
 	DELETE FROM responsable
 	WHERE ClvRes=vClvRes;
 	COMMIT;
-	DBMS_OUTPUT.PUT_LINE('baja del Responsable '|| vClvRes);
+	DBMS_OUTPUT.PUT_LINE('Baja del Responsable '|| vClvRes);
 END bajaresponsable;
 /
 
@@ -455,5 +444,25 @@ VALUES ('NP002', 'IN003', default, SYSDATE, SYSDATE, 'Inscripcion', 2000);
 INSERT INTO cargo
 VALUES ('NP003', 'IN001', default, SYSDATE, NULL, 'Libros', 500);
 
+------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE reporteVenc
+(	vClvAlumno IN CHAR )	
+AS
+	CURSOR cursorReporteVenc
+	IS
+	SELECT clvAlumno,nomAlu, apPatAlu,apMatAlu, fechaVenc
+	FROM alumno
+	JOIN inscripcion USING (clvAlumno)
+	JOIN cargo USING (clvInscrip)
+	WHERE clvAlumno = vClvAlumno
+	ORDER BY TO_DATE(fechaVenc,'DD/MM/YY') ASC;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('Fecha de Vencimiento de Pagos:');
+	FOR alumReg IN cursorReporteVenc LOOP
+		DBMS_OUTPUT.PUT_LINE('	|	'||alumReg.clvAlumno||'	|	'|| alumReg.nomAlu||'	|	'|| alumReg.apPatAlu||'	|	'||alumReg.apMatAlu||' |	'||alumReg.fechaVenc||'	|	');
+	END LOOP;				
+END reporteVenc;
+/
 
 
